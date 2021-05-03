@@ -91,11 +91,9 @@ if (!currentNode.move_number) {
 */
 
 const fetch = require('node-fetch');
-const pgnParser = require('pgn-parser');
-const fs = require('fs').promises;
 
-const {Chess} = require('chess.js');
-const chess = new Chess();
+import {promises as fs} from 'fs';
+import {Chess} from './cm-chess/Chess.mjs';
 
 //const deserializeOpeningTree = require('./openingtree/OpeningTreeSerializer')
 
@@ -112,7 +110,9 @@ function getUserColor(username, data) {
 
 async function getOpening(color) {
   const pgn = await fs.readFile(`games/${color}.pgn`, 'utf8');
-  return pgnParser.parse(pgn);
+  const chess = new Chess();
+  chess.loadPgn(pgn);
+  return chess;
 }
 
 function whichColorToPlay(data) {
