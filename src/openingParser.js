@@ -7,24 +7,23 @@ async function getOpening(color) {
   const pgn = await fs.readFile(`games/${color}.pgn`, 'utf8');
   const chess = new Chess();
   chess.loadPgn(pgn);
-  for (let i = 0; i < chess.pgn.history.moves.length; i++) {
-    const node = chess.pgn.history.moves[i];
-    console.log(node.san);
-  }
+  return chess;
 }
 
-getOpening('White')
-
+export {getOpening}
 
 
 /*
-
 const doesNodeHasVar = node => {
-  if (node.ravs === undefined) {
+  let result;
+  if (node.variation === undefined) {
     return {status: false};
-  } else if (node.ravs !== undefined) {
-    return {status: true, variations: node.ravs};
+  } else if (node.variation !== undefined) {
+    result = {status: true, variation: node.variation};
+  } else if (node.variations !== undefined) {
+    result = {status: true, variations: node.variations};
   }
+  return result;
 };
 
 nodeToFen = (node, chess, color, nextNode) => {

@@ -1,4 +1,6 @@
 /*
+TODO: 
+
 1. connect to lichess
 -> oauth lichess
 
@@ -35,97 +37,27 @@ lichess.user.games('brumoche', {with_moves: 1}, function (err, games) {
 
 https://chess.stackexchange.com/questions/4138/chess-engine-with-api
 
-
-      let candidateMoves = openingRef.moves[index].ravs.filter(function (e) {
-        return e.moves.filter(function (a) {
-          return a.move_number == currentMove && a.move == userMove;
-        });
-      });
-
-
-function isInDB(lastGame, openingRef, index, chess, colorToPlay) {
-  const opponentMove = lastGame.moves[index].move;
-  let databaseMove = openingRef.moves[index].move;
-
-  if (opponentMove == databaseMove) {
-    return {status: true, opponentMove, databaseMove};
-  } else {
-    colorToPlay == 'White'
-      ? (currentMove = lastGame.moves[index].move_number)
-      : (currentMove = lastGame.moves[index - 1].move_number);
-
-    let variations = openingRef.moves[index].ravs;
-    //console.log(variations[0]);
-    let candidateMoves = [];
-    for (let j = 0; j < variations.length; j++) {
-      const elem = variations[j].moves;
-      //console.log(elem[0]);
-      if (elem[0].move == opponentMove) {
-        candidateMoves.push(elem);
-      }
-    }
-    if (candidateMoves.length > 0)
-      return {status: true, candidateMoves, opponentMove, databaseMove};
-    return {status: false, opponentMove, databaseMove};
-  }
-}
-
-
-if (!currentNode.move_number) {
-              if (colorToPlay != 'White') {
-                currentMove = lastGame.moves[index - 1].move_number;
-                nodeMoveNumber =
-                  openingRef.moves[i].ravs[j].moves[k - 1].move_number;
-
-                console.log(
-                  openingRef.moves[i].ravs[j].moves[k - 1]
-                );
-                console.log(
-                  openingRef.moves[i].ravs[j].moves[k]
-                );
-                console.log(
-                  currentNode.move + ' ' + opponentMove + ' ' + nodeMoveNumber
-                );
-              }
-            }
 */
 
-const fetch = require('node-fetch');
-
+import fetch from 'node-fetch';
 import {promises as fs} from 'fs';
 import {Chess} from './cm-chess/Chess.mjs';
 
-//const deserializeOpeningTree = require('./openingtree/OpeningTreeSerializer')
+import {getOpening} from './openingParser.js';
+import {
+  getUserData,
+  getUserColor,
+  whichColorToPlay,
+  whichTurnNumber,
+} from './functions.js';
 
-async function getUser(username) {
-  let url = `https://lichess.org/api/user/${username}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  console.log(data);
-}
+console.log(await getUserData('vilouza'));
 
-function getUserColor(username, data) {
-  return data.headers.find(el => el.value === username).name;
-}
+let chess = await getOpening('White');
 
-async function getOpening(color) {
-  const pgn = await fs.readFile(`games/${color}.pgn`, 'utf8');
-  const chess = new Chess();
-  chess.loadPgn(pgn);
-  return chess;
-}
-
-function whichColorToPlay(data) {
-  data.move_number ? (color = 'White') : (color = 'Black');
-  return color;
-}
-
-function whichTurnNumber(lastNode, currentNode, colorToPlay) {
-  if (colorToPlay == 'White') {
-    return currentNode.move_number;
-  } else if (colorToPlay == 'Black') {
-    return lastNode.move_number;
-  }
+for (let i = 0; i < chess.pgn.history.moves.length; i++) {
+  const node = chess.pgn.history.moves[i];
+  //console.log(node);
 }
 
 function isTheory(lastGame, openingRef, index, chess) {
@@ -265,4 +197,50 @@ async function getGames(username) {
   }
 }
 
-getGames('detnop');
+/*
+
+let candidateMoves = openingRef.moves[index].ravs.filter(function (e) {
+  return e.moves.filter(function (a) {
+    return a.move_number == currentMove && a.move == userMove;
+  });
+});
+
+function isInDB(lastGame, openingRef, index, chess, colorToPlay) {
+  const opponentMove = lastGame.moves[index].move;
+  let databaseMove = openingRef.moves[index].move;
+
+  if (opponentMove == databaseMove) {
+    return {status: true, opponentMove, databaseMove};
+  } else {
+    colorToPlay == 'White'
+      ? (currentMove = lastGame.moves[index].move_number)
+      : (currentMove = lastGame.moves[index - 1].move_number);
+
+    let variations = openingRef.moves[index].ravs;
+    //console.log(variations[0]);
+    let candidateMoves = [];
+    for (let j = 0; j < variations.length; j++) {
+      const elem = variations[j].moves;
+      //console.log(elem[0]);
+      if (elem[0].move == opponentMove) {
+        candidateMoves.push(elem);
+      }
+    }
+    if (candidateMoves.length > 0)
+      return {status: true, candidateMoves, opponentMove, databaseMove};
+    return {status: false, opponentMove, databaseMove};
+  }
+}
+
+if (!currentNode.move_number) {
+  if (colorToPlay != 'White') {
+    currentMove = lastGame.moves[index - 1].move_number;
+    nodeMoveNumber = openingRef.moves[i].ravs[j].moves[k - 1].move_number;
+
+    console.log(openingRef.moves[i].ravs[j].moves[k - 1]);
+    console.log(openingRef.moves[i].ravs[j].moves[k]);
+    console.log(currentNode.move + ' ' + opponentMove + ' ' + nodeMoveNumber);
+  }
+}
+
+*/
