@@ -1,5 +1,5 @@
 import {promises as fs} from 'fs';
-import {Chess} from '../cm-chess/Chess.mjs';
+import {Chess} from '../modules/cm-chess/Chess.mjs';
 
 async function getOpening(color) {
   const pgn = await fs.readFile(`./games/${color}.pgn`, 'utf8');
