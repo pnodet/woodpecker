@@ -1,7 +1,7 @@
-const express = require('express');
-const {spawn} = require('child_process');
-const app = express();
-const port = 3000;
+import {Router} from 'express';
+import {spawn} from 'child_process';
+const router = Router();
+
 app.get('/', (req, res) => {
   var dataToSend;
   // spawn new child process to call the python script
@@ -18,7 +18,5 @@ app.get('/', (req, res) => {
     res.send(dataToSend);
   });
 });
-app.listen(port, () =>
-  console.log(`Example app listening on port 
-${port}!`)
-);
+
+export default router;
