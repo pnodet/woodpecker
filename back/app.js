@@ -9,9 +9,9 @@ app.use(json());
 app.use(urlencoded({extended: true}));
 
 /** ROUTES */
-import puzzler from './routes/puzzler';
+import puzzler from './routes/puzzler.js';
 app.use('/puzzler', puzzler);
-import lichess from './routes/lichess';
+import lichess from './routes/lichess.js';
 app.use('/lichess', lichess);
 
 /** START SERVER */

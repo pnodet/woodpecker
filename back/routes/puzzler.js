@@ -2,7 +2,7 @@ import {Router} from 'express';
 import {spawn} from 'child_process';
 const router = Router();
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
   var dataToSend;
   // spawn new child process to call the python script
   const python = spawn('python', ['../../modules/puzzler/main.py']);
