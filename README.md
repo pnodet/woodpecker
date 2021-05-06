@@ -1,28 +1,27 @@
-# woodpecker
+# TODO: woodpecker 
 
-TODO: 
+### 1. connect to app via lichess
+-> user logs in using oauth lichess
 
-1. connect to lichess
--> oauth lichess
+### 2. server generates problems from your games (close to your chess level)
+-> Retrieve user games using liches API : GET lichess/games/detnop
+-> Save games in DB (check if game id already exist)
+-> Generate puzzles from games in DB
+-> Save puzzles to DB
 
-2. server generates problems from your games (close to your chess level)
--> POST woodpecker/detnop
--> GET lichess/games/detnop
+### 3. train between 20 and 100 pb
+-> Play puzzles at your level
+-> Get a score
+-> Train again 
+-> Add more puzzles from your games to the pool
 
-curl  https://lichess.org/api/games/user/detnop\?perfType\=$perf\&rated\=true\&analysed\=true\&clocks=false\&evals\=true
+### 4. Practice your openings
+-> Import opening studies PGN
+-> Parse PGN, avoid transpositions, allow only one move fo each position (FEN)
+-> Save to DB
+-> Compare to studyopenings to see where you went wrong
 
--> Generates Puzzles
+## Modules 🙏 : 
 
-3. train between 20 and 100 pb
--> get duplicate puzzles
--> play puzzle at your level
-
-4. get a score
-
-5. train again 
-
-6. add more puzzles from your games to the pool
-
-7. compare to studyopenings to see where you went wrong
--> import multiple PGN
--> compare PGN to avoid transposition or different moves
+Chess logic : https://github.com/shaack/cm-chess
+PGN to Puzzles : https://github.com/vitogit/pgn-tactics-generator
