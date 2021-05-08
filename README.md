@@ -36,4 +36,5 @@
 ## Modules 🙏 :
 
 Chess logic : https://github.com/shaack/cm-chess \
+Chess board : https://github.com/shaack/cm-chessboard \
 PGN to Puzzles : https://github.com/vitogit/pgn-tactics-generator
