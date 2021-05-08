@@ -2,6 +2,16 @@
 private/
 package-lock.json
 
+*.py[cd]
+*/*.py[cd]
+stockfish-*
+Stockfish
+slack_key.txt
+venv
+*pgn
+.idea/
+.venv
+
 # Logs
 logs
 *.log

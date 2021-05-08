@@ -22,7 +22,7 @@ router.get('/games', async function (req, res) {
   const buffer = await response.arrayBuffer();
   const arrBuffer = new Uint8Array(buffer);
   let data = new TextDecoder().decode(arrBuffer);
-  fs.writeFile('./test.pgn', data);
+  fs.writeFile('../modules/puzzler/games.pgn', data);
   //TODO: save to games to mongo db
   res.send({status: 200});
 });
