@@ -1,9 +1,22 @@
-# TODO: woodpecker
-
 <p align="center">
-<img width="150" heigth="150" src="front/assets/images/woodpecker.png">
+
 </p>
 
+<div align="center">
+  <h1>
+    <br/>
+    <img width="75" heigth="75" src="front/assets/images/woodpecker.png">
+    <br />
+    <br />
+    woodpecker
+    <br />
+    <br />
+    <br />
+  </h1>
+  <sup>
+</div>
+
+TODO:
 ### 1. Connect to app via lichess
 
 -> user logs in using oauth lichess
