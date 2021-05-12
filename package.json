@@ -4,14 +4,16 @@
   "description": "",
   "type": "module",
   "main": "main.js",
- "scripts": {
-    "dev": "nodemon ./front/app.js"
+  "scripts": {
+    "back": "nodemon ./back/app.js",
+    "front": "nodemon ./front/app.js"
   },
   "author": "Paul Nodet",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mongodb": "^3.6.6",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
