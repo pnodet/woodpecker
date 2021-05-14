@@ -19,12 +19,13 @@ router.get('/games', async function (req, res) {
   const buffer = await response.arrayBuffer();
   const arrBuffer = new Uint8Array(buffer);
   let data = new TextDecoder().decode(arrBuffer);
+  fs.writeFile('./modules/puzzler/games.pgn', data);
   data = data.replaceAll(/\n\n\n/g, '\n')
   //TODO: save to games to mongo db
   const arr = data.split(/(?=\[Event)/g);
-  arr.forEach(item => {
+  /* arr.forEach(item => {
     console.log(saveGameToDb(item));
-  });
+  }); */
   res.send({status: 200});
 });
 
