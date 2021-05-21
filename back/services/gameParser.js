@@ -4,7 +4,11 @@ import {Chess} from '../../modules/cm-chess/Chess.mjs';
 const saveGameToDb = item => {
   const chess = new Chess();
   chess.loadPgn(item);
-  return chess;
+  let gameObject = {
+    headers: chess.header(),
+    moves: chess.history()
+  }
+  insertOne(gameObject, 'games');
 };
 
 export {saveGameToDb};

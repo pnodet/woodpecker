@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
-import {promises as fs} from 'fs';
+import * as fs from 'fs';
 import * as queries from '../services/queries.js';
+import {Chess} from 'chess.js';
 import {saveGameToDb} from '../services/gameParser.js';
 
 import {Router} from 'express';
@@ -19,13 +20,22 @@ router.get('/games', async function (req, res) {
   const buffer = await response.arrayBuffer();
   const arrBuffer = new Uint8Array(buffer);
   let data = new TextDecoder().decode(arrBuffer);
-  fs.writeFile('./modules/puzzler/games.pgn', data);
-  data = data.replaceAll(/\n\n\n/g, '\n')
   //TODO: save to games to mongo db
-  const arr = data.split(/(?=\[Event)/g);
-  /* arr.forEach(item => {
-    console.log(saveGameToDb(item));
-  }); */
+  const arr = data.trim().split(/(?=\[Event)/g);
+  arr.forEach(item => {
+    item = item.trimEnd();
+    const chess = new Chess();
+    chess.load_pgn(item);
+    let moves = chess.history();
+    console.log(moves);
+    let gameObject = {
+      headers: 'test',
+      user: username,
+      moves,
+    };
+    queries.insertOne(gameObject, 'games');
+    //TODO: check that game is not already in the db
+  });
   res.send({status: 200});
 });
 
