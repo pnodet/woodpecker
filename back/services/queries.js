@@ -1,83 +1,137 @@
 import mongo from 'mongodb';
 import config from '../config.js';
 
-const url = config.db.url 
+const url = config.db.url;
 
-export const createDB = () => {
-  mongo.MongoClient.connect(url, {useUnifiedTopology: true}, function (err, db) {
-      if (err) throw err;
-      console.log('oK')
-      db.close();
-    }
-  );
-  return true
-};
-
-export const createCollection = (collec) => {
-  mongo.MongoClient.connect(url, {useUnifiedTopology: true}, function (err, db) {
-      if (err) throw err;
-      var dbo = db.db('woodpecker-db');
-      dbo.createCollection(collec, function (err, res) {
-        if (err) throw err;
-        console.log('Collection ' + collec +' created!');
-        db.close();
-      });
-    }
-  );
+export const createDB = async () => {
+  const client = new mongo.MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  try {
+    await client.connect();
+    console.log('Database created!');
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.close();
+  }
   return true;
 };
 
-export const insertOne = (doc, collec) => {
-  mongo.MongoClient.connect(url, {useUnifiedTopology: true}, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db('woodpecker-db');
-    dbo.collection(collec).insertOne(doc, function (err, res) {
-      if (err) throw err;
-      console.log('1 document inserted');
-      db.close();
-    });
+export const createCollection = async collec => {
+  const client = new mongo.MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
-}
+  try {
+    await client.connect();
+    const database = client.db('woodpecker-db');
+    const collection = database.createCollection(collec);
+    console.log('Collection ' + collec + ' created!');
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.close();
+  }
+  return true;
+};
 
-export const insertMany = (arr, collec) => {
-  mongo.MongoClient.connect(url, {useUnifiedTopology: true}, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db('woodpecker-db');
-    dbo.collection(collec).insertMany(arr, function (err, res) {
-      if (err) throw err;
-      console.log('Number of documents inserted: ' + res.insertedCount);
-      db.close();
-    });
+export const insertOne = async (doc, collec) => {
+  const client = new mongo.MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
-}
+  try {
+    await client.connect();
+    const database = client.db('woodpecker-db');
+    const collection = database.collection(collec);
+    const result = await collection.insertOne(doc);
+    console.log(
+      `${result.insertedCount} document was inserted with the _id: ${result.insertedId}`
+    );
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.close();
+  }
+};
 
-export const findOne = (itemQuery, collec) => {
-  mongo.MongoClient.connect(url, {useUnifiedTopology: true}, async function (err, db) {
-    if (err) throw err;
-    var dbo = db.db('woodpecker-db');
-    const result = dbo
-      .collection(collec)
-      .find(itemQuery)
-    const response = await result.toArray();
-    console.log(response);
-    db.close()
+export const insertMany = async (arr, collec) => {
+  const client = new mongo.MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
-}
+  try {
+    await client.connect();
+    const database = client.db('woodpecker-db');
+    const collection = database.collection(collec);
+    const result = await collection.insertMany(arr);
+    console.log(
+      `${result.insertedCount} documents were inserted with the _id: ${result.insertedId}`
+    );
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.close();
+  }
+};
 
-export const find = (collec) => {
-  mongo.MongoClient.connect(url, {useUnifiedTopology: true}, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db('woodpecker-db');
-    dbo.collection(collec).find({}, { projection: { _id: 0, name: 1, address: 1 } }).toArray(function(err, result) {
-      if (err) throw err;
-      console.log(result);
-      db.close();
-    });
+export const findOne = async (itemQuery, collec) => {
+  const client = new mongo.MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
-}
+  try {
+    await client.connect();
+    const database = client.db('woodpecker-db');
+    const collection = database.collection(collec);
+    const options = {};
+    const cursor = collection.find(itemQuery, options);
+    if ((await cursor.count()) === 0) {
+      console.log('Document not found!');
+    }
+    const response = await cursor.toArray();
+    return response;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.close();
+  }
+};
 
-export const empty = () => {
-  mongo.MongoClient.connect(url, {useUnifiedTopology: true}, function (err, db) {
-    if (err) throw err;
+export const find = async (collec, options) => {
+  const client = new mongo.MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
-}
+  try {
+    await client.connect();
+    const database = client.db('woodpecker-db');
+    const collection = database.collection(collec);
+    const cursor = collection.find(itemQuery, options);
+    if ((await cursor.count()) === 0) {
+      console.log('Documents not found!');
+    }
+    const response = await cursor.toArray();
+    return response;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.close();
+  }
+};
+
+export const empty = async () => {
+  const client = new mongo.MongoClient(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  try {
+    await client.connect();
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.close();
+  }
+};
