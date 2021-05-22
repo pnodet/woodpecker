@@ -5,7 +5,7 @@ const router = Router();
 router.get('/', (req, res) => {
   var dataToSend;
   // spawn new child process to call the python script
-  const pythonProcess = spawn('python3', ['./modules/puzzler/main.py']);
+  const pythonProcess = spawn('python3', ['./modules/tactics-generator/main.py']);
   // collect data from script
   pythonProcess.stdout.on('data', function (data) {
     console.log('Pipe data from python script...');
