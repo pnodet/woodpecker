@@ -77,7 +77,7 @@ export const insertMany = async (arr, collec) => {
   }
 };
 
-export const findOne = async (itemQuery, collec) => {
+export const findOne = async (itemQuery, collec, options = {}) => {
   const client = new mongo.MongoClient(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -86,12 +86,7 @@ export const findOne = async (itemQuery, collec) => {
     await client.connect();
     const database = client.db('woodpecker-db');
     const collection = database.collection(collec);
-    const options = {};
-    const cursor = collection.find(itemQuery, options);
-    if ((await cursor.count()) === 0) {
-      console.log('Document not found!');
-    }
-    const response = await cursor.toArray();
+    const response = await collection.findOne(itemQuery, options);
     return response;
   } catch (err) {
     console.error(err);
@@ -100,7 +95,7 @@ export const findOne = async (itemQuery, collec) => {
   }
 };
 
-export const find = async (collec, options) => {
+export const find = async (itemQuery, collec, options = {}) => {
   const client = new mongo.MongoClient(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
