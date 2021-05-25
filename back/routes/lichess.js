@@ -13,7 +13,7 @@ router.get('/createDB', (_req, res) => {
 });
 
 router.get('/games', async function (req, res) {
-  const username = req.query.username;
+  const username = req.query.username.toLowerCase();
   const max = req.query.max;
   const token = req.query.token;
   const url = 'https://lichess.org/api/games/user/' + username + '?max=' + max + '&token=' + token + '&rated=true&perfType=blitz,rapid,classical&pgnInJson=true';
@@ -25,15 +25,15 @@ router.get('/games', async function (req, res) {
       const isInDB = await queries.findOne({game_id: item.id}, 'games');
       if (isInDB === null) {
         let color;
-        if (item.players.white.user.name == username) color = 'white';
-        if (item.players.black.user.name == username) color = 'black';
+        if (item.players.white.user.name.toLowerCase() == username) color = 'white';
+        if (item.players.black.user.name.toLowerCase() == username) color = 'black';
 
         const gameObject = {
           game_id: item.id,
           user: username,
           color,
           pgn: item.pgn,
-          analyzed : false,
+          analyzed: false,
         };
 
         queries.insertOne(gameObject, 'games');
