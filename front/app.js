@@ -10,6 +10,10 @@ app.use(json());
 app.use(urlencoded({extended: true}));
 app.use(express.static('front'));
 
+/** ROUTES */
+import auth from './routes/auth.js';
+app.use('/auth', auth);
+
 /** START SERVER */
 const server = app.listen(port, function () {
   console.log('Express app listening at http://localhost:' + port);
