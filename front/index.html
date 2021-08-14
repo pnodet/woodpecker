@@ -12,52 +12,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"></script>
   </head>
   <body>
-    <h1>WOODEPECKER</h1>
-    <a href="/auth"><button>Connect with lichess</button></a>
-    <div class="board" id="board" style="width: 50%"></div>
-    <div id="output" style="width: 100%; overflow: hidden"></div>
-    <script type="module">
-      import {
-        INPUT_EVENT_TYPE,
-        COLOR,
-        Chessboard,
-      } from '../modules/cm-chessboard/Chessboard.js';
 
-      const chess = new Chess();
-
-      function inputHandler(event) {
-        console.log('event', event);
-        if (event.type === INPUT_EVENT_TYPE.moveDone) {
-          const move = {from: event.squareFrom, to: event.squareTo};
-          const result = chess.move(move);
-          if (result) {
-            event.chessboard.disableMoveInput();
-            event.chessboard.setPosition(chess.fen());
-            const possibleMoves = chess.moves({verbose: true});
-            if (possibleMoves.length > 0) {
-              const randomIndex = Math.floor(
-                Math.random() * possibleMoves.length
-              );
-              const randomMove = possibleMoves[randomIndex];
-              chess.move({from: randomMove.from, to: randomMove.to});
-              event.chessboard.enableMoveInput(inputHandler, COLOR.white);
-              event.chessboard.setPosition(chess.fen());
-            }
-          } else {
-            console.warn('invalid move', move);
-          }
-          return result;
-        } else {
-          return true;
-        }
-      }
-
-      const board = new Chessboard(document.getElementById('board'), {
-        position: chess.fen(),
-        sprite: {url: '../assets/images/chessboard-sprite-staunty.svg'},
-        orientation: COLOR.white,
-      });
-      board.enableMoveInput(inputHandler, COLOR.white);
-    </script>
+    <div class="unauthorized">
+      <div class="top">
+        <img class="img-lichess" src="assets/images/lichess.png" />
+        <h1>Happy to see you<br />newcomer 👋</h1>
+      </div>
+      <div class="content-bottom">
+        <a class="btn" href="/auth">SIGN IN WITH LICHESS</a>
+        <p class="sign-in-text">in order to get started</p>
+      </div>
+    </div>
   </body>
 </html>
