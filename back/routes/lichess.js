@@ -28,6 +28,7 @@ router.get('/games', async function (req, res) {
         if (item.players.white.user.name.toLowerCase() == username) color = 'white';
         if (item.players.black.user.name.toLowerCase() == username) color = 'black';
 
+        // FIXME: check player color
         const gameObject = {
           game_id: item.id,
           user: username,
