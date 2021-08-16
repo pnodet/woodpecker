@@ -1,3 +1,6 @@
 [submodule "modules/tactics-generator"]
 	path = modules/tactics-generator
 	url = https://github.com/pnxdxt/pgn-tactics-generator
+[submodule "backend"]
+	path = backend
+	url = https://github.com/pnxdxt/woodpecker-backend

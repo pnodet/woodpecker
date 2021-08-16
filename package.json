@@ -5,7 +5,7 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "back": "nodemon ./back/app.js",
+    "back": "nodemon ./backend/app.js",
     "front": "nodemon ./front/app.js"
   },
   "author": "Paul Nodet",
