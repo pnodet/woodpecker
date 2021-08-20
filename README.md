@@ -5,7 +5,7 @@
 <div align="center">
   <h1>
     <br/>
-    <img width="75" heigth="75" src="front/assets/images/woodpecker.png">
+    <img width="75" heigth="75" src="./frontend/assets/images/woodpecker.png">
     <br />
     <br />
     woodpecker
